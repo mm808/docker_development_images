@@ -1,0 +1,17 @@
+# Use the Windows Server Core base image
+FROM mcr.microsoft.com/windows/servercore:ltsc2025
+
+# Install winget
+RUN powershell -Command \
+    Invoke-WebRequest -Uri https://aka.ms/winget-cli -OutFile winget-cli.zip ; \
+    Expand-Archive -Path winget-cli.zip -DestinationPath C:\winget-cli ; \
+    Remove-Item -Force winget-cli.zip
+
+# Add winget to PATH
+ENV PATH="C:\winget-cli;${PATH}"
+
+# Install the necessary components for C++ development
+RUN winget install -e --id Microsoft.VisualStudio.2022.BuildTools --silent --accept-package-agreements --accept-source-agreements --override '--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64'
+
+# Set environment variables for the build tools
+ENV PATH="C:\BuildTools\Common7\Tools;C:\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64;C:\BuildTools\Common7\IDE;C:\BuildTools\MSBuild\Current\Bin;${PATH}"
