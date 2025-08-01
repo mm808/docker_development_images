@@ -23,7 +23,21 @@ jobs:
         id: get_dockerfiles
         run: |
           subpaths=$(find dockerfiles -mindepth 2 -maxdepth 2 -type d | sed 's|^dockerfiles/||')
+
+          echo "Raw subpaths:"
+          echo "$subpaths"
+
+          # If empty, fail early
+          if [ -z "$subpaths" ]; then
+            echo "No dockerfiles found."
+            echo "matrix=[]" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           json_array=$(printf '%s\n' "$subpaths" | jq -R . | jq -s .)
+          echo "Generated JSON array: $json_array"
+
+
           echo "matrix<<EOF" >> $GITHUB_OUTPUT
           echo "$json_array" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
