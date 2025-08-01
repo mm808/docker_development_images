@@ -63,7 +63,7 @@ jobs:
         run: |
           echo "Working on ${{ matrix.dockerfile }}"
           name=${{ matrix.dockerfile }}
-          suffix="${name##*_}}"
+          suffix="${name##*_}"
           echo "SUFFIX=${suffix}" >> $GITHUB_ENV
           if [[ "${suffix}" == "arm64" ]]; then
             PLATFORM="linux/arm64"
