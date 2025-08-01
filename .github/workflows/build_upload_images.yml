@@ -19,15 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate docker subpaths as JSON array
+      - name: Generate dockerfile targets as JSON matrix
         id: get_dockerfiles
         run: |
-          subpaths=$(find dockerfiles -mindepth 2 -maxdepth 2 -type d | sed 's|^dockerfiles/||')
-
-          echo "Raw subpaths:"
+          subpaths=$(find dockerfiles -mindepth 2 -type f | sed 's|^dockerfiles/||')
+          echo "Found dockerfiles:"
           echo "$subpaths"
 
-          # If empty, fail early
           if [ -z "$subpaths" ]; then
             echo "No dockerfiles found."
             echo "matrix=[]" >> $GITHUB_OUTPUT
@@ -35,9 +33,6 @@ jobs:
           fi
 
           json_array=$(printf '%s\n' "$subpaths" | jq -R . | jq -s .)
-          echo "Generated JSON array: $json_array"
-
-
           echo "matrix<<EOF" >> $GITHUB_OUTPUT
           echo "$json_array" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -51,8 +46,7 @@ jobs:
       matrix:
         dockerfile: ${{ fromJson(needs.Get_Docker_Files.outputs.matrix) }}
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: echo matrix
         shell: bash
