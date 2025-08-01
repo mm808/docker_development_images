@@ -24,7 +24,9 @@ jobs:
         run: |
           subpaths=$(find dockerfiles -mindepth 2 -maxdepth 2 -type d | sed 's|^dockerfiles/||')
           json_array=$(printf '%s\n' "$subpaths" | jq -R . | jq -s .)
-          echo "matrix=$json_array" >> $GITHUB_OUTPUT
+          echo "matrix<<EOF" >> $GITHUB_OUTPUT
+          echo "$json_array" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
   Build_and_Upload:
     runs-on: ubuntu-latest
