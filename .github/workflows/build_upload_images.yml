@@ -81,7 +81,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          file: .devcontainer/${{ matrix.dockerfile }}
+          file: dockerfiles/${{ matrix.dockerfile }}
           platforms: ${{ env.PLATFORM }}
           push: true
           tags: ${{ env.DOCKER_REPO }}/awscli_ansible_tf1_12_2_${{ env.SUFFIX }}:latest
