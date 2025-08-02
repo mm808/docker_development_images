@@ -76,7 +76,7 @@ jobs:
           echo "PLATFORM=${PLATFORM}" >> $GITHUB_ENV
 
           tag="${name##*/}"
-          echo "TAG=$tag_$suffix" >> $GITHUB_ENV
+          echo "TAG=${tag}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
