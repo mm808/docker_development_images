@@ -3,24 +3,17 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND="noninteractive" TZ="America"
 
 RUN apt-get update && apt-get install -y \
-    apt-transport-https \
     ca-certificates \
     curl \
-    gnupg \
     lsb-release \
-    software-properties-common \
-    python3-setuptools \
-    python3-pip \
     zip \
     unzip \
     jq \
     git \
-    zlib1g-dev \
-    build-essential \
-    sudo \
-    nano \
     groff \
     ssh
+
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \ 
     unzip awscliv2.zip && \
