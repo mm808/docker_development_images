@@ -87,4 +87,4 @@ jobs:
           file: dockerfiles/${{ matrix.dockerfile }}
           platforms: ${{ env.PLATFORM }}
           push: true
-          tags: ${{ env.TAG }}:latest
+          tags: ${{ env.DOCKER_REPO }}/${{ env.TAG }}:latest
